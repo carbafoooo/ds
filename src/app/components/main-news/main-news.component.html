@@ -1,0 +1,23 @@
+<div class="slider__warpper" >
+    <div #currentItem class="flex__container flex--pikachu flex--active" [attr.data-slide]="item.id" *ngFor="let item of Items">
+        <div  class="flex__item flex__item--left">
+            <div class="flex__content">
+                <p class="text--sub">Pokemon Gen I</p>
+                <h1 class="text--big">{{item.title}}</h1>
+                <p class="text--normal">{{ item.desc }}</p>
+            </div>
+            <p class="text__background">{{ item.bgText }}</p>
+        </div>
+        <div class="flex__item flex__item--right"></div>
+        <img class="pokemon__img" [src]='item.img' />
+    </div>
+</div>
+
+<div class="slider__navi">
+    <a #nextItem (click)="onChangeItem($event)"  class="slide-nav active" data-slide="1">pikachu</a>
+    <a (click)="onChangeItem($event)" class="slide-nav" data-slide="2">piplup</a>
+    <a (click)="onChangeItem($event)" class="slide-nav" data-slide="3">blaziken</a>
+    <a (click)="onChangeItem($event)" class="slide-nav" data-slide="4">dialga</a>
+    <a (click)="onChangeItem($event)" class="slide-nav" data-slide="5">zekrom</a>
+</div>
+
