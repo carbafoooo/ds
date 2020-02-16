@@ -17,18 +17,25 @@
 								class="form-control"
 								placeholder="First name"
 								ngModel
+								#fname="ngModel"
 								required
+								minlength="3"
 							/>
+							<div *ngIf="checkFiled(fname)" class="alert alert-danger mt-1">{{ fname.errors }}</div>
 						</div>
 						<div class="col-8">
 							<label for="lname">نام خانوادگی</label>
 							<input type="text" name="lname" class="form-control" placeholder="Last name" required />
+							<div class="alert alert-danger mt-1">
+								{{ errors }}
+							</div>
 						</div>
 					</div>
 					<div class="form-row">
 						<div class="col-6">
 							<label for="email">پست الکترونیک</label>
 							<input type="text" class="form-control" name="email" placeholder="email" ngModel required />
+							<div class="alert alert-danger mt-1"></div>
 						</div>
 					</div>
 					<div class="form-row">
@@ -42,6 +49,7 @@
 								ngModel
 								required
 							/>
+							<div class="alert alert-danger mt-1"></div>
 						</div>
 					</div>
 					<div class="form-row">
@@ -55,6 +63,7 @@
 								ngModel
 								required
 							/>
+							<div class="alert alert-danger mt-1"></div>
 						</div>
 					</div>
 					<div class="form-row">
@@ -68,6 +77,7 @@
 								ngModel
 								required
 							/>
+							<div class="alert alert-danger mt-1"></div>
 						</div>
 					</div>
 					<div class="form-row pt-2">
