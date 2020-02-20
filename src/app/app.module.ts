@@ -13,7 +13,7 @@ import { HomeComponent } from "./pages/home/home.component";
 import { MainNewsComponent } from "./components/main-news/main-news.component";
 import { RegisterFormComponent } from "./components/forms/register-form/register-form.component";
 import { RequiredValidatorMessage } from "./utils/forms-validator/required.validator";
-import { passwodValidator } from "./utils/forms-validator/password.validator";
+import { passwordValidator } from "./utils/forms-validator/password.validator";
 
 @NgModule({
 	declarations: [AppComponent, HomeComponent, MainNewsComponent, RegisterFormComponent],
@@ -26,9 +26,9 @@ import { passwodValidator } from "./utils/forms-validator/password.validator";
 		HttpClientModule,
 		BrowserAnimationsModule,
 		FormlyModule.forRoot({
-			validators: [{ name: "confirm", validation: passwodValidator }],
 			validationMessages: [
-				{ name: "required", message: RequiredValidatorMessage },
+				{ name: "minLenght", message: "mus at least 3 character" },
+				{ name: "maxLenght", message: "mus at least 3 character" },
 				{ name: "match", message: "password not match" }
 			]
 		}),

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { FormGroup } from "@angular/forms";
-import { FormlyField, FormlyFieldConfig } from "@ngx-formly/core";
+import { FormGroup, AbstractControl } from "@angular/forms";
+import { FormlyFieldConfig, FormlyFormOptions } from "@ngx-formly/core";
 
 @Component({
 	selector: "app-register-form",
@@ -15,8 +15,11 @@ export class RegisterFormComponent implements OnInit {
 		email: "",
 		mobile: "",
 		userName: "",
-		password: ""
+		password: "",
+		confirmPassword: "",
+		province: ""
 	};
+	options: FormlyFormOptions = {};
 
 	fields: FormlyFieldConfig[] = [
 		{
@@ -30,7 +33,22 @@ export class RegisterFormComponent implements OnInit {
 					templateOptions: {
 						placeholder: "نام",
 						label: "نام",
-						required: true
+						required: true,
+						minLength: 3,
+						maxLength: 20
+					},
+					validators: {
+						justString: {
+							expression: (control: AbstractControl) => /\D/.test(control.value)
+						},
+						message: (err: any, field: FormlyFieldConfig) => "not accept"
+					},
+					validation: {
+						messages: {
+							required: "name is required",
+							minlength: "name must grater than 3 character",
+							justString: "not valid"
+						}
 					}
 				},
 				{
@@ -43,6 +61,11 @@ export class RegisterFormComponent implements OnInit {
 						placeholder: "نام خانوادگی",
 						label: "نام خانوادگی",
 						required: true
+					},
+					validation: {
+						messages: {
+							required: "last name required"
+						}
 					}
 				}
 			]
@@ -57,11 +80,45 @@ export class RegisterFormComponent implements OnInit {
 					type: "input",
 					templateOptions: {
 						label: "نام کاربری",
-						placeholder: "نام کاربری",
-						required: true
+						placeholder: "شماره ملی",
+						required: true,
+						maxLength: 10
 					},
-					validation: ["required"]
-				},
+					validators: {
+						nationalId: {
+							expression: (control: AbstractControl) => /\d{10}/.test(control.value)
+						}
+					},
+					validation: {
+						messages: {
+							required: "user name required",
+							nationalId: "user is not valid"
+						}
+					}
+				}
+			]
+		},
+
+		{
+			key: "password",
+			validators: {
+				fieldMatch: {
+					expression: (control: AbstractControl) => {
+						const value = control.value;
+						console.log(value);
+						return (
+							value.confirmPassword === value.password ||
+							// avoid displaying the message error when values are empty
+							!value.confirmPassword ||
+							!value.password
+						);
+					},
+					messages: (err: any, field: FormlyFieldConfig) => "not match",
+					errorPath: "confirmPassword"
+				}
+			},
+			fieldGroupClassName: "row",
+			fieldGroup: [
 				{
 					className: "col-3",
 					key: "password",
@@ -71,16 +128,19 @@ export class RegisterFormComponent implements OnInit {
 						label: "رمز عبور",
 						placeholder: "رمز عبور",
 						required: true,
-						type: "password"
+						type: "password",
+						pattern: /(?=(.*[0-9]))(?=.*[\!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}/gm
 					},
-					validators: {
-						validation: ["confirm"]
+					validation: {
+						messages: {
+							required: "password is required"
+						}
 					}
 				},
 				{
 					className: "col-3",
 					key: "confirmPassword",
-					name: "confirm password",
+					name: "confirmPassword",
 					type: "input",
 					templateOptions: {
 						label: "تکرار رمز عبور",
@@ -88,8 +148,11 @@ export class RegisterFormComponent implements OnInit {
 						required: true,
 						type: "password"
 					},
-					validators: {
-						validation: ["confirm"]
+					validation: {
+						messages: {
+							required: "password is required",
+							fieldMatch: "password dosent Match"
+						}
 					}
 				}
 			]

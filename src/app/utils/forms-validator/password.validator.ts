@@ -1,8 +1,11 @@
-import { ValidationErrors, FormControl, FormGroup } from "@angular/forms";
+import { ValidationErrors, FormControl, FormGroup, FormsModule } from "@angular/forms";
 import { FormlyField, FormlyForm, Field } from "@ngx-formly/core";
 import { FormlyFieldInput } from "@ngx-formly/bootstrap";
 
-export function passwodValidator(form: FormGroup): ValidationErrors {
-	console.log(form.parent.get("password"));
-	return form.parent.get("password") === form.parent.get("confirmPassword") ? null : { match: true };
+export function passwordValidator(form: FormControl): ValidationErrors {
+	console.log(form.value);
+	return form.parent.get("confirmPassword").value === form.parent.get("password").value ||
+		!form.parent.get("password").value || !form.parent.get("confirmPassword").value
+		? null
+		: { match: true };
 }
